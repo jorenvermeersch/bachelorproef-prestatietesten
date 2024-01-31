@@ -19,8 +19,8 @@ yarn install
 ## Set environment variables
 
 1. Create an .env-file in this directory. Copy-paste the contents of .env.example into the file.
-2. Change the API configuration. Check the API README for more information. 
-3. Change the `API_DIRECTORY` and `FRONTEND_DIRECTORY` paths. 
+2. Complete the API configuration. Check the [REST API README](https://github.com/jorenvermeersch/bachelorproef-backend) for more information. 
+3. Complete the `YARN_EXECUTABLE` and `API_DIRECTORY` fields. 
 
 ## Run performance tests
 
