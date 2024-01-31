@@ -1,0 +1,25 @@
+before:
+  flow:
+    - loop:
+      - log: Register {{ $loopElement.name }}
+      - post:
+          url: "/users/register"
+          json:
+            name: "{{ $loopElement.name }}"
+            email: "{{ $loopElement.email }}"
+            password: "{{ $loopElement.password }}"
+          capture:
+            - json: $.token
+              as: token
+      over: auth
+scenarios:
+  - flow:
+      - log: "Create transaction"
+      - post: 
+          url: "/transactions"
+          json:
+            amount: "{{ amount }}"
+            date: "{{ date }}"
+            placeId: "{{ placeId }}"
+          headers:
+            authorization: "Bearer {{ token }}"

@@ -1,0 +1,17 @@
+{
+  "origin": "http://localhost:5173",
+  "pingEndpoint": "http://localhost:9000/api/health/ping",
+  "port": 8041,
+  "loginCredentials": {
+    "email": "thomas.aelbrecht@hogent.be",
+    "password": "12345678"
+  },
+  "loginPage": "login",
+  "authenticatedPages": ["transactions", "transactions/edit/2", "places"],
+  "resultsBaseDirectory": "./results",
+  "selectors": {
+    "email": "#email",
+    "password": "#password",
+    "loginButton": "button[type='submit']"
+  }
+}

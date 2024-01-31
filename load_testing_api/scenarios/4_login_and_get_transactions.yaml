@@ -1,0 +1,20 @@
+before:
+  flow:
+    - loop:
+      - log: Login {{ $loopElement.name }}
+      - post:
+          url: "/users/login"
+          json:
+            email: "{{ $loopElement.email }}"
+            password: "{{ $loopElement.password }}"
+          capture:
+            - json: $.token
+              as: token
+      over: auth
+scenarios:
+  - flow:
+      - log: "Get all transactions"
+      - get: 
+          url: "/transactions"
+          headers:
+            authorization: "Bearer {{ token }}"

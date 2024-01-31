@@ -1,0 +1,7 @@
+{
+  "type": "module",
+  "dependencies": {
+    "lighthouse": "^11.5.0",
+    "puppeteer": "^21.9.0"
+  }
+}

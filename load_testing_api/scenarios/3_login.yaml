@@ -1,0 +1,36 @@
+config:
+  payload:
+    path: "../mock_data/vusers.csv"
+    fields:
+      - "name"
+      - "email"
+      - "password"
+    skipHeader: true
+  environments: 
+    development: 
+      target: http://localhost:9000/api
+      phases:
+        - duration: 60
+          arrivalRate: 1
+          rampTo: 5
+          name: Warm up phase.
+        - duration: 60
+          arrivalRate: 5
+          rampTo: 10
+          maxVusers: 25
+          name: Ramp up load.
+        - duration: 30
+          arrivalRate: 10
+          rampTo: 15
+          maxVusers: 40
+          name: Spike phase.
+  plugins:
+    apdex: {}
+scenarios:
+  - flow:
+    - log: "Login {{ name }}"
+    - post:
+        url: "/users/login"
+        json:
+          email: "{{ email }}"
+          password: "{{ password }}"

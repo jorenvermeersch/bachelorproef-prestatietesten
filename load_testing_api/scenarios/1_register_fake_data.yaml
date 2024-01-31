@@ -1,0 +1,9 @@
+scenarios:
+  - name: "Register users with fake data" 
+    flow:
+      - post: 
+          url: "/users/register"
+          json:
+            name: "{{ $randFullName() }}"
+            email: "{{ $randEmail() }}"
+            password: "{{ $randPassword() }}"
