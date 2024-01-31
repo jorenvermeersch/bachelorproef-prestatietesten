@@ -41,6 +41,7 @@ API_DIRECTORY = getenv("API_DIRECTORY")
 print("Environment variables loaded.")
 
 
+# Functions.
 def drop_test_database():
     config = {
         "host": DATABASE_HOST,
@@ -136,6 +137,7 @@ def run_testscripts_and_save_results(run):
         print(f"Error while running Artillery testscripts: {error}")
 
 
+# Run tests.
 if len(sys.argv) == 2:
     number_of_runs = int(sys.argv[1])
 

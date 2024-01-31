@@ -28,11 +28,11 @@ const numberOfRuns = 5;
 const current_date = new Date().toISOString().split("T")[0];
 const resultsDirectory = `${resultsBaseDirectory}/${current_date}`;
 
-// .env file.
+// Read repository paths from .env-file.
 const API_DIRECTORY = process.env.API_DIRECTORY;
 const FRONTEND_DIRECTORY = process.env.FRONTEND_DIRECTORY;
 
-// Helper functions.
+// Functions.
 const clearInput = async (input) => {
   await input.click({ clickCount: 3 });
   await input.press("Backspace");
@@ -170,6 +170,7 @@ const disableServerLogging = () => {
   if (!process.env.LOG_DISABLED) process.env.LOG_DISABLED = true;
 };
 
+// Run tests.
 const main = async () => {
   let shutdownApi, shutdownApp;
 
@@ -177,7 +178,7 @@ const main = async () => {
     disableServerLogging();
     shutdownApi = await startApi();
     shutdownApp = await startApp();
-    await waitForServer(); // API and front-end app run on async child process. Race condition with performance tests.
+    await waitForServer(); // API and front-end app run on async child process. This avoids a race condition.
     makeResultsDirectory();
     for (let run = 1; run <= numberOfRuns; run++) {
       console.log(`Starting run ${run}/${numberOfRuns}.`);
