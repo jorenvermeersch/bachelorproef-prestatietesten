@@ -2,7 +2,7 @@
 
 These load tests only work in the development environment (i.e. NODE_ENV=development). 
 
-## Required packages
+## Install required packages
 
 The load tests are run using [Artillery](https://www.artillery.io/).
 
@@ -26,36 +26,9 @@ pip install -r requirements.txt
 
 ## Set environment variables
 
-1. Create an .env-file in this directory. Copy-paste the contents below into the file.
+1. Create an .env-file in this directory. Copy-paste the contents of .env.example into the file.
 2. Change the API configuration. Check the API README for more information. 
 3. Complete the `DATABASE_PASSWORD`, `YARN_EXECUTABLE` and `API_DIRECTORY` fields. 
-
-```
-# --- API configuration ----. 
-# General. 
-NODE_ENV=development
-HOST=localhost
-PORT=9000
-
-# Logging. 
-LOG_DISABLED=true
-
-# Database. 
-DATABASE_HOST="localhost"
-DATABASE_PORT=3306
-DATABASE_NAME="budget"
-DATABASE_USERNAME="root"
-DATABASE_PASSWORD="root"
-
-# Authorization. 
-AUTH_DISABLED=
-AUTH_JWT_SECRET="secret"
-
-# --- Script configuration ---. 
-YARN_EXECUTABLE="path/to/yarn/executable"
-API_DIRECTORY="path/to/api/directory"
-```
-
 
 ## Run load tests
 
