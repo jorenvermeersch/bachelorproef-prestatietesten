@@ -1,4 +1,4 @@
-import { exec } from "child_process";
+import { exec, execSync } from "child_process";
 import fs from "fs";
 import http from "http";
 import lighthouse from "lighthouse";
@@ -170,11 +170,22 @@ const disableServerLogging = () => {
   if (!process.env.LOG_DISABLED) process.env.LOG_DISABLED = true;
 };
 
+const setGitBranches = () => {
+  execSync("git checkout main", {
+    cwd: API_DIRECTORY,
+  });
+
+  execSync("git checkout feature/auth", {
+    cwd: FRONTEND_DIRECTORY,
+  });
+};
+
 // Run tests.
 const main = async () => {
   let shutdownApi, shutdownApp;
 
   try {
+    setGitBranches();
     disableServerLogging();
     shutdownApi = await startApi();
     shutdownApp = await startApp();

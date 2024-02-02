@@ -137,21 +137,32 @@ def run_testscripts_and_save_results(run):
         print(f"Error while running Artillery testscripts: {error}")
 
 
+def set_git_branch():
+    subprocess.run("git checkout main", shell=True,
+                   check=True, cwd=API_DIRECTORY)
+    return
+
+
+def main():
+    set_git_branch()
+    for run in range(1, number_of_runs+1):
+        try:
+            print(f"Starting run {run}/{number_of_runs}")
+            drop_test_database()
+            shutdown_api = start_api()
+            wait_for_startup()
+            make_results_directory()
+            run_testscripts_and_save_results(run=run)
+
+        except Exception as exception:
+            print(f"An exception occurred when running tests: {exception}")
+
+        finally:
+            shutdown_api()
+
+
 # Run tests.
 if len(sys.argv) == 2:
     number_of_runs = int(sys.argv[1])
 
-for run in range(1, number_of_runs+1):
-    try:
-        print(f"Starting run {run}/{number_of_runs}")
-        drop_test_database()
-        shutdown_api = start_api()
-        wait_for_startup()
-        make_results_directory()
-        run_testscripts_and_save_results(run=run)
-
-    except Exception as exception:
-        print(f"An exception occurred when running tests: {exception}")
-
-    finally:
-        shutdown_api()
+main()
