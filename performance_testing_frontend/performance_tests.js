@@ -39,6 +39,8 @@ const DATABASE_NAME = process.env.DATABASE_NAME;
 const DATABASE_USERNAME = process.env.DATABASE_USERNAME;
 const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD;
 
+let resultsFolder;
+
 // Functions.
 const clearInput = async (input) => {
   await input.click({ clickCount: 3 });
@@ -51,14 +53,14 @@ const type = async (page, selector, value) => {
   await input.type(value);
 };
 
-const login = async (browser) => {
+const login = async (browser, appVersion) => {
   const page = await browser.newPage();
   await page.goto(`${origin}/${loginPage}`);
 
   await page.waitForSelector(selectors.email, { visible: true });
 
-  await type(page, selectors.email, loginCredentials.email);
-  await type(page, selectors.password, loginCredentials.password);
+  await type(page, selectors.email, loginCredentials[appVersion].email);
+  await type(page, selectors.password, loginCredentials[appVersion].password);
 
   await page.click(selectors.loginButton);
   await page.waitForNavigation();
@@ -78,8 +80,6 @@ const runLighthouseTest = async (url) => {
   const result = await lighthouse(url, lighthouseOptions);
   return result;
 };
-
-let resultsFolder;
 
 const makeResultsDirectory = (folder) => {
   resultsFolder = `${resultsDirectory}/${folder}`;
@@ -103,7 +103,7 @@ const saveResultReport = (result, page, run) => {
   );
 };
 
-const runPerformanceTests = async (run) => {
+const runPerformanceTests = async (run, appVersion) => {
   const browser = await initializePuppeteerBrowser();
 
   // Login page.
@@ -111,7 +111,7 @@ const runPerformanceTests = async (run) => {
   saveResultReport(result, loginPage, run);
 
   // Authenticated pages.
-  await login(browser);
+  await login(browser, appVersion);
   for (const page of authenticatedPages) {
     const result = await runLighthouseTest(`${origin}/${page}`);
     saveResultReport(result, page, run);
@@ -216,14 +216,14 @@ const dropDatabase = async () => {
 
 const tests = [
   {
-    folder: "original",
+    appVersion: "original",
     branches: {
       api: "original",
       frontend: "original",
     },
   },
   {
-    folder: "cybsersecurity",
+    appVersion: "cybersecurity",
     branches: {
       api: "main",
       frontend: "main",
@@ -235,8 +235,8 @@ const tests = [
 const main = async () => {
   let shutdownApi, shutdownApp;
 
-  for (const { folder, branches } of tests) {
-    console.log(`Running tests for ${folder}...`);
+  for (const { appVersion, branches } of tests) {
+    console.log(`Running tests for ${appVersion}...`);
     try {
       setGitBranches(branches);
       await dropDatabase(); // Schema is different between branches.
@@ -246,10 +246,10 @@ const main = async () => {
       shutdownApp = await startApp();
       await waitForServer(); // API and front-end app run on async child process. This avoids a race condition.
 
-      makeResultsDirectory(folder);
+      makeResultsDirectory(appVersion);
       for (let run = 1; run <= numberOfRuns; run++) {
         console.log(`Starting run ${run}/${numberOfRuns}.`);
-        await runPerformanceTests(run);
+        await runPerformanceTests(run, appVersion);
       }
     } catch (error) {
       console.log(`An error occured while running tests: ${error}`);
@@ -258,10 +258,6 @@ const main = async () => {
       shutdownApi();
     }
   }
-
-  console.log(
-    `Lighthouse performance tests succesfully executed! Check the directory "${resultsDirectory}" for the results.`
-  );
 };
 
 main();

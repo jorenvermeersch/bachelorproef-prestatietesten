@@ -3,8 +3,14 @@
   "pingEndpoint": "http://localhost:9000/api/health/ping",
   "port": 8041,
   "loginCredentials": {
-    "email": "thomas.aelbrecht@hogent.be",
-    "password": "12345678"
+    "original": {
+      "email": "thomas.aelbrecht@hogent.be",
+      "password": "12345678"
+    },
+    "cybersecurity": {
+      "email": "thomas.aelbrecht@hogent.be",
+      "password": "toegepaste_informatica"
+    }
   },
   "loginPage": "login",
   "authenticatedPages": ["transactions", "transactions/edit/2", "places"],
