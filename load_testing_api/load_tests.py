@@ -40,6 +40,7 @@ API_DIRECTORY = getenv("API_DIRECTORY")
 
 print("Environment variables loaded.")
 
+result_folder = None
 
 # Functions.
 def drop_test_database():
@@ -109,16 +110,21 @@ def wait_for_startup(interval=1, attempts=5):
     return
 
 
-def make_results_directory():
-    makedirs(results_directory, exist_ok=True)
+def make_results_directory(app_version):
+    global result_folder 
+    
+    result_folder = f"{results_directory}/{app_version}"
+    print(result_folder)
+    
+    makedirs(result_folder, exist_ok=True)
 
     for filename in scenarios:
-        makedirs(f"{results_directory}/{splitext(filename)[0]}", exist_ok=True)
+        makedirs(f"{result_folder}/{splitext(filename)[0]}", exist_ok=True)
 
 
 def create_artillery_command(filename, run):
     command = artillery_run
-    result_file_path = f"{results_directory}/{splitext(filename)[0]}/report_run_{run}.json"
+    result_file_path = f"{result_folder}/{splitext(filename)[0]}/report_run_{run}.json"
 
     if not filename == "3_login.yaml":
         command = f"{command} --config ./config.yaml"
@@ -137,28 +143,47 @@ def run_testscripts_and_save_results(run):
         print(f"Error while running Artillery testscripts: {error}")
 
 
-def set_git_branch():
-    subprocess.run("git checkout main", shell=True,
+def set_git_branch(branch):
+    subprocess.run(f"git checkout {branch}", shell=True,
                    check=True, cwd=API_DIRECTORY)
     return
 
 
+tests = [
+  {
+    "app_version": "original",
+    "branch":  "original",
+  },
+  {
+    "app_version": "cybersecurity",
+    "branch":  "main",
+  },
+]
+
 def main():
-    set_git_branch()
-    for run in range(1, number_of_runs+1):
-        try:
-            print(f"Starting run {run}/{number_of_runs}")
-            drop_test_database()
-            shutdown_api = start_api()
-            wait_for_startup()
-            make_results_directory()
-            run_testscripts_and_save_results(run=run)
+    for test in tests:
+        app_version = test["app_version"]
+        branch = test["branch"]
 
-        except Exception as exception:
-            print(f"An exception occurred when running tests: {exception}")
+        print(f"Running tests for {app_version}...")
 
-        finally:
-            shutdown_api()
+        set_git_branch(branch=branch)
+        for run in range(1, number_of_runs+1):
+            try:
+                print(f"Starting run {run}/{number_of_runs}")
+                drop_test_database()
+
+                shutdown_api = start_api()
+                wait_for_startup()
+
+                make_results_directory(app_version=app_version)
+                run_testscripts_and_save_results(run=run)
+
+            except Exception as exception:
+                print(f"An exception occurred when running tests: {exception}")
+
+            finally:
+                shutdown_api()
 
 
 # Run tests.
