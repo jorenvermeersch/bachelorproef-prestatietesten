@@ -72,22 +72,26 @@ const runLighthouseTest = async (url) => {
   return result;
 };
 
-const makeResultsDirectory = () => {
-  if (!fs.existsSync(resultsDirectory)) {
-    fs.mkdirSync(resultsDirectory, { recursive: true });
+let resultsFolder;
+
+const makeResultsDirectory = (folder) => {
+  resultsFolder = `${resultsDirectory}/${folder}`;
+
+  if (!fs.existsSync(resultsFolder)) {
+    fs.mkdirSync(resultsFolder, { recursive: true });
   }
 
   const pages = [loginPage, ...authenticatedPages];
   for (const page of pages) {
     const escaped_page = page.replaceAll("/", "-");
-    fs.mkdirSync(`${resultsDirectory}/${escaped_page}`, { recursive: true });
+    fs.mkdirSync(`${resultsFolder}/${escaped_page}`, { recursive: true });
   }
 };
 
 const saveResultReport = (result, page, run) => {
   const escaped_page = page.replaceAll("/", "-");
   fs.writeFileSync(
-    `${resultsDirectory}/${escaped_page}/report_run_${run}.${lighthouseOptions.output}`,
+    `${resultsFolder}/${escaped_page}/report_run_${run}.${lighthouseOptions.output}`,
     result.report
   );
 };
@@ -170,40 +174,68 @@ const disableServerLogging = () => {
   if (!process.env.LOG_DISABLED) process.env.LOG_DISABLED = true;
 };
 
-const setGitBranches = () => {
-  execSync("git checkout main", {
+const setGitBranches = ({ api, frontend }) => {
+  execSync(`git checkout ${api}`, {
     cwd: API_DIRECTORY,
   });
 
-  execSync("git checkout feature/auth", {
+  execSync(`git checkout ${frontend}`, {
     cwd: FRONTEND_DIRECTORY,
   });
 };
+
+const dropDatabase = async () => {
+  // TODO: Implement.
+};
+
+const tests = [
+  {
+    folder: "original",
+    branches: {
+      api: "original",
+      frontend: "original",
+    },
+  },
+  {
+    folder: "cybsersecurity",
+    branches: {
+      api: "main",
+      frontend: "main",
+    },
+  },
+];
 
 // Run tests.
 const main = async () => {
   let shutdownApi, shutdownApp;
 
-  try {
-    setGitBranches();
-    disableServerLogging();
-    shutdownApi = await startApi();
-    shutdownApp = await startApp();
-    await waitForServer(); // API and front-end app run on async child process. This avoids a race condition.
-    makeResultsDirectory();
-    for (let run = 1; run <= numberOfRuns; run++) {
-      console.log(`Starting run ${run}/${numberOfRuns}.`);
-      await runPerformanceTests(run);
+  for (const { folder, branches } of tests) {
+    console.log(`Running tests for ${folder}...`);
+    try {
+      setGitBranches(branches);
+      await dropDatabase(); // Schema is different between branches.
+      disableServerLogging();
+
+      shutdownApi = await startApi();
+      shutdownApp = await startApp();
+      await waitForServer(); // API and front-end app run on async child process. This avoids a race condition.
+
+      makeResultsDirectory(folder);
+      for (let run = 1; run <= numberOfRuns; run++) {
+        console.log(`Starting run ${run}/${numberOfRuns}.`);
+        await runPerformanceTests(run);
+      }
+    } catch (error) {
+      console.log(`An error occured while running tests: ${error}`);
+    } finally {
+      shutdownApp();
+      shutdownApi();
     }
-    console.log(
-      `Lighthouse performance tests succesfully executed! Check the directory "${resultsDirectory}" for the results.`
-    );
-  } catch (error) {
-    console.log(`An error occured while running tests: ${error}`);
-  } finally {
-    shutdownApp();
-    shutdownApi();
   }
+
+  console.log(
+    `Lighthouse performance tests succesfully executed! Check the directory "${resultsDirectory}" for the results.`
+  );
 };
 
 main();
