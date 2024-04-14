@@ -7,6 +7,7 @@ from os.path import isfile, join, splitext
 from pathlib import Path
 
 import mysql.connector
+import psutil
 import requests
 from dotenv import load_dotenv
 from mysql.connector import Error
@@ -73,17 +74,24 @@ def drop_test_database():
             print("MySQL connection is closed.")
 
 
+def terminate_process_and_children(parent_pid):
+    parent = psutil.Process(parent_pid)
+    for child in parent.children(recursive=True): 
+        child.terminate()
+    parent.terminate()
+
 def start_api():
     env = environ.copy()
     env["LOG_DISABLED"] = "true"  # Ensure logging is disabled.
 
     api_process = subprocess.Popen(
-        [YARN_EXECUTABLE, "start"], cwd=API_DIRECTORY, env=env)
+        [YARN_EXECUTABLE, "start"], cwd=API_DIRECTORY, env=env, stdout=subprocess.PIPE)
 
     def shutdown_api():
         if api_process.poll() is None:
             print("Shutting down API...")
-            api_process.terminate()
+            terminate_process_and_children(api_process.pid)
+            print("API successfully shut down.")
 
     return shutdown_api
 
