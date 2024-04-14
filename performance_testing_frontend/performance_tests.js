@@ -25,7 +25,7 @@ const lighthouseOptions = {
   port: port,
 };
 
-const numberOfRuns = 1;
+const numberOfRuns = 50;
 const current_date = new Date().toISOString().split("T")[0];
 const resultsDirectory = `${resultsBaseDirectory}/${current_date}`;
 
@@ -126,7 +126,9 @@ const startApi = async () => {
   });
 
   const shutdownApi = () => {
+    console.log("Shutting down API...");
     apiProcess.kill();
+    console.log("API successfully shut down.");
   };
 
   return shutdownApi;
@@ -138,7 +140,9 @@ const startApp = async () => {
   });
 
   const shutdownApp = () => {
+    console.log("Shutting down front-end app...");
     frontendProcess.kill();
+    console.log("Front-end app successfully shut down.");
   };
 
   return shutdownApp;
