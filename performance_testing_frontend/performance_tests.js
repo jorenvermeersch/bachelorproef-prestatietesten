@@ -2,6 +2,7 @@ import { exec, execSync } from "child_process";
 import fs from "fs";
 import http from "http";
 import lighthouse from "lighthouse";
+import mysql from "mysql2/promise";
 import puppeteer from "puppeteer";
 import config from "./config.json" assert { type: "json" };
 
@@ -24,13 +25,19 @@ const lighthouseOptions = {
   port: port,
 };
 
-const numberOfRuns = 5;
+const numberOfRuns = 1;
 const current_date = new Date().toISOString().split("T")[0];
 const resultsDirectory = `${resultsBaseDirectory}/${current_date}`;
 
 // Read repository paths from .env-file.
 const API_DIRECTORY = process.env.API_DIRECTORY;
 const FRONTEND_DIRECTORY = process.env.FRONTEND_DIRECTORY;
+
+const DATABASE_HOST = process.env.DATABASE_HOST;
+const DATABASE_PORT = process.env.DATABASE_PORT;
+const DATABASE_NAME = process.env.DATABASE_NAME;
+const DATABASE_USERNAME = process.env.DATABASE_USERNAME;
+const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD;
 
 // Functions.
 const clearInput = async (input) => {
@@ -185,7 +192,26 @@ const setGitBranches = ({ api, frontend }) => {
 };
 
 const dropDatabase = async () => {
-  // TODO: Implement.
+  const connection = await mysql.createConnection({
+    host: DATABASE_HOST,
+    port: DATABASE_PORT,
+    user: DATABASE_USERNAME,
+    password: DATABASE_PASSWORD,
+  });
+
+  try {
+    const dropQuery = `DROP DATABASE IF EXISTS ${DATABASE_NAME}`;
+    await connection.execute(dropQuery);
+    console.log(`Database ${DATABASE_NAME} successfully dropped.`);
+  } catch (error) {
+    console.log(
+      `An error occured while dropping the database ${DATABASE_NAME}`
+    );
+    throw error;
+  } finally {
+    connection.end();
+    console.log("MySQL connection closed");
+  }
 };
 
 const tests = [

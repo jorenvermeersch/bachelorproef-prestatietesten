@@ -2,6 +2,7 @@
   "type": "module",
   "dependencies": {
     "lighthouse": "^11.5.0",
+    "mysql2": "^3.9.4",
     "puppeteer": "^21.9.0"
   }
 }
