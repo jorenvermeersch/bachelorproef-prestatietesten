@@ -1,7 +1,7 @@
 import { appendFile, mkdir, readFile, readdir } from "node:fs/promises";
 
-const dataPath = "./raw/performance_testing";
-const resultsPath = "./processed/performance_testing";
+const dataPath = "./data/raw/performance_testing";
+const resultsPath = "./data/processed/performance_testing";
 
 const metrics = [
   "first-contentful-paint",
@@ -22,7 +22,7 @@ const performanceTestsToCsv = async () => {
     for (const test of tests) {
       await appendFile(
         `${resultsPath}/${branch}/${test}.csv`,
-        `${["id", ...metrics].join(",")}\n`
+        `${["id", "score", ...metrics].join(",")}\n`
       );
 
       const runs = await readdir(`${dataPath}/${branch}/${test}`);
@@ -34,7 +34,7 @@ const performanceTestsToCsv = async () => {
 
         const jsonData = JSON.parse(data);
 
-        const values = [];
+        const values = [jsonData.categories.performance.score];
         for (const metric of metrics) {
           const value = jsonData.audits[metric].numericValue;
           values.push(value);
