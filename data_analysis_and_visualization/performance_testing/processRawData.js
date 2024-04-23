@@ -1,7 +1,7 @@
 import { appendFile, mkdir, readFile, readdir } from "node:fs/promises";
 
-const dataPath = "./data/raw/performance_testing";
-const resultsPath = "./data/processed/performance_testing";
+const dataPath = "../data/raw/performance_testing";
+const resultsPath = "../data/processed/performance_testing";
 
 const metrics = [
   "first-contentful-paint",
