@@ -1,4 +1,5 @@
 import { appendFile, mkdir, readFile, readdir } from "node:fs/promises";
+import path from "node:path";
 
 const dataPath = "../data/raw/load_testing";
 const resultsPath = "../data/processed/load_testing";
@@ -21,7 +22,8 @@ const loadTestToCsv = async () => {
   const branches = await readdir(dataPath);
 
   for (const branch of branches) {
-    const tests = await readdir(`${dataPath}/${branch}`);
+    const testFiles = await readdir(`${dataPath}/${branch}`);
+    const tests = testFiles.map((filename) => path.parse(filename).name);
 
     await mkdir(`${resultsPath}/${branch}`, { recursive: true });
 
@@ -31,7 +33,7 @@ const loadTestToCsv = async () => {
         `${["id", ...metrics].join(",")}\n`
       );
 
-      const data = await readFile(`${dataPath}/${branch}/${test}`);
+      const data = await readFile(`${dataPath}/${branch}/${test}.json`);
       const jsonData = JSON.parse(data);
       const results = jsonData.intermediate;
 
