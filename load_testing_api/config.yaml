@@ -14,20 +14,20 @@ config:
         - "date"
         - "placeId"
       skipHeader: true
-  environments: 
-    development: 
+  environments:
+    development:
       target: http://localhost:9000/api
       phases:
-        - duration: 60
+        - duration: 180
           arrivalRate: 1
           rampTo: 5
           name: Warm up phase.
-        - duration: 60
+        - duration: 180
           arrivalRate: 5
           rampTo: 10
           maxVusers: 25
           name: Ramp up load.
-        - duration: 30
+        - duration: 90
           arrivalRate: 10
           rampTo: 15
           maxVusers: 40
