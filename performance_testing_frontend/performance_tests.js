@@ -26,7 +26,7 @@ const lighthouseOptions = {
   port: port,
 };
 
-const numberOfRuns = 1;
+const numberOfRuns = 50;
 const current_date = new Date().toISOString().split("T")[0];
 const resultsDirectory = `${resultsBaseDirectory}/${current_date}`;
 
