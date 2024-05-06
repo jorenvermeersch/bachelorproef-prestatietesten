@@ -1,7 +1,7 @@
 import { appendFile, mkdir, readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 
-const dataPath = "../../data/load_testing/2024-05-05";
+const dataPath = "../../data/load_testing/2024-05-06";
 const resultsPath = "../processed_data/load_testing";
 
 const metrics = [
