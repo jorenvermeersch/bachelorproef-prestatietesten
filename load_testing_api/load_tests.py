@@ -160,11 +160,11 @@ def set_git_branch(branch):
 tests = [
   {
     "app_version": "original",
-    "branch":  "original",
+    "branch":  "original-testing",
   },
   {
     "app_version": "cybersecurity",
-    "branch":  "main",
+    "branch":  "main-testing",
   },
 ]
 

@@ -222,14 +222,14 @@ const tests = [
   {
     appVersion: "original",
     branches: {
-      api: "original",
+      api: "original-testing",
       frontend: "original",
     },
   },
   {
     appVersion: "cybersecurity",
     branches: {
-      api: "main",
+      api: "main-testing",
       frontend: "main",
     },
   },
