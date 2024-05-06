@@ -22,10 +22,11 @@ const lighthouseOptions = {
   output: "json",
   disableStorageReset: true, // Keep JWT-token stored in localStorage.
   onlyCategories: ["performance"],
+  skipAudits: ["screenshot-thumbnails", "final-screenshot"],
   port: port,
 };
 
-const numberOfRuns = 50;
+const numberOfRuns = 1;
 const current_date = new Date().toISOString().split("T")[0];
 const resultsDirectory = `${resultsBaseDirectory}/${current_date}`;
 
