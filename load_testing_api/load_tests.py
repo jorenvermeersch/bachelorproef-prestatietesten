@@ -162,10 +162,10 @@ tests = [
     "app_version": "original",
     "branch":  "original-testing",
   },
-  {
-    "app_version": "cybersecurity",
-    "branch":  "main-testing",
-  },
+#   {
+#     "app_version": "cybersecurity",
+#     "branch":  "main-testing",
+#   },
 ]
 
 def main():
