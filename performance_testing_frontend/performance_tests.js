@@ -13,6 +13,7 @@ const {
   loginCredentials,
   loginPage,
   authenticatedPages,
+  unauthenticatedPages,
   resultsBaseDirectory,
   selectors,
 } = config;
@@ -89,7 +90,7 @@ const makeResultsDirectory = (folder) => {
     fs.mkdirSync(resultsFolder, { recursive: true });
   }
 
-  const pages = [loginPage, ...authenticatedPages];
+  const pages = [...unauthenticatedPages, loginPage, ...authenticatedPages];
   for (const page of pages) {
     const escaped_page = page.replaceAll("/", "-");
     fs.mkdirSync(`${resultsFolder}/${escaped_page}`, { recursive: true });
@@ -106,6 +107,12 @@ const saveResultReport = (result, page, run) => {
 
 const runPerformanceTests = async (run, appVersion) => {
   const browser = await initializePuppeteerBrowser();
+
+  // Unauthorized pages.
+  for (const page of unauthenticatedPages) {
+    const result = await runLighthouseTest(`${origin}/${page}`);
+    saveResultReport(result, page, run);
+  }
 
   // Login page.
   const result = await runLighthouseTest(`${origin}/${loginPage}`);

@@ -13,6 +13,7 @@
     }
   },
   "loginPage": "login",
+  "unauthenticatedPages": ["register"],
   "authenticatedPages": ["transactions", "transactions/edit/2", "places"],
   "resultsBaseDirectory": "./results",
   "selectors": {
