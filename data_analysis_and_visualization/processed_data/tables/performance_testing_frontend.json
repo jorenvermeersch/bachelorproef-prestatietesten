@@ -1,0 +1,288 @@
+{
+  "rapports": [
+    {
+      "page": "login",
+      "statistics": [
+        {
+          "name": "score",
+          "before": {
+            "mean": 0.55,
+            "std": 0
+          },
+          "after": {
+            "mean": 0.55,
+            "std": 0
+          }
+        },
+        {
+          "name": "first-contentful-paint",
+          "before": {
+            "mean": 9998.75,
+            "std": 73.35
+          },
+          "after": {
+            "mean": 16884.68,
+            "std": 91.91
+          }
+        },
+        {
+          "name": "largest-contentful-paint",
+          "before": {
+            "mean": 17098.51,
+            "std": 73.62
+          },
+          "after": {
+            "mean": 28292.89,
+            "std": 87.67
+          }
+        },
+        {
+          "name": "total-blocking-time",
+          "before": {
+            "mean": 39.98,
+            "std": 6.16
+          },
+          "after": {
+            "mean": 48.9,
+            "std": 13.37
+          }
+        },
+        {
+          "name": "cumulative-layout-shift",
+          "before": {
+            "mean": 0,
+            "std": 0
+          },
+          "after": {
+            "mean": 0,
+            "std": 0
+          }
+        },
+        {
+          "name": "speed-index",
+          "before": {
+            "mean": 12245.1,
+            "std": 398.53
+          },
+          "after": {
+            "mean": 20809.8,
+            "std": 197.04
+          }
+        }
+      ]
+    },
+    {
+      "page": "transactions",
+      "statistics": [
+        {
+          "name": "score",
+          "before": {
+            "mean": 0.86,
+            "std": 0
+          },
+          "after": {
+            "mean": 0.67,
+            "std": 0.01
+          }
+        },
+        {
+          "name": "first-contentful-paint",
+          "before": {
+            "mean": 2863.99,
+            "std": 20.48
+          },
+          "after": {
+            "mean": 4556.26,
+            "std": 21.43
+          }
+        },
+        {
+          "name": "largest-contentful-paint",
+          "before": {
+            "mean": 3436.6,
+            "std": 37.68
+          },
+          "after": {
+            "mean": 5308.23,
+            "std": 50.53
+          }
+        },
+        {
+          "name": "total-blocking-time",
+          "before": {
+            "mean": 20.79,
+            "std": 13.19
+          },
+          "after": {
+            "mean": 68.3,
+            "std": 59.54
+          }
+        },
+        {
+          "name": "cumulative-layout-shift",
+          "before": {
+            "mean": 0,
+            "std": 0
+          },
+          "after": {
+            "mean": 0,
+            "std": 0
+          }
+        },
+        {
+          "name": "speed-index",
+          "before": {
+            "mean": 3277.52,
+            "std": 44.03
+          },
+          "after": {
+            "mean": 5627.16,
+            "std": 107.98
+          }
+        }
+      ]
+    },
+    {
+      "page": "transactions-edit",
+      "statistics": [
+        {
+          "name": "score",
+          "before": {
+            "mean": 0.86,
+            "std": 0.01
+          },
+          "after": {
+            "mean": 0.67,
+            "std": 0.01
+          }
+        },
+        {
+          "name": "first-contentful-paint",
+          "before": {
+            "mean": 2867.4,
+            "std": 21.28
+          },
+          "after": {
+            "mean": 4551.66,
+            "std": 24.26
+          }
+        },
+        {
+          "name": "largest-contentful-paint",
+          "before": {
+            "mean": 3382.26,
+            "std": 25.15
+          },
+          "after": {
+            "mean": 5295.07,
+            "std": 50.3
+          }
+        },
+        {
+          "name": "total-blocking-time",
+          "before": {
+            "mean": 28.18,
+            "std": 20.66
+          },
+          "after": {
+            "mean": 66.38,
+            "std": 50.36
+          }
+        },
+        {
+          "name": "cumulative-layout-shift",
+          "before": {
+            "mean": 0,
+            "std": 0
+          },
+          "after": {
+            "mean": 0,
+            "std": 0
+          }
+        },
+        {
+          "name": "speed-index",
+          "before": {
+            "mean": 3278.89,
+            "std": 49.0
+          },
+          "after": {
+            "mean": 5600.73,
+            "std": 73.57
+          }
+        }
+      ]
+    },
+    {
+      "page": "places",
+      "statistics": [
+        {
+          "name": "score",
+          "before": {
+            "mean": 0.86,
+            "std": 0
+          },
+          "after": {
+            "mean": 0.66,
+            "std": 0.01
+          }
+        },
+        {
+          "name": "first-contentful-paint",
+          "before": {
+            "mean": 2869.54,
+            "std": 24.06
+          },
+          "after": {
+            "mean": 4556.2,
+            "std": 25.55
+          }
+        },
+        {
+          "name": "largest-contentful-paint",
+          "before": {
+            "mean": 3446.98,
+            "std": 24.75
+          },
+          "after": {
+            "mean": 5324.83,
+            "std": 25.36
+          }
+        },
+        {
+          "name": "total-blocking-time",
+          "before": {
+            "mean": 19.7,
+            "std": 9.95
+          },
+          "after": {
+            "mean": 68.44,
+            "std": 55.76
+          }
+        },
+        {
+          "name": "cumulative-layout-shift",
+          "before": {
+            "mean": 0,
+            "std": 0
+          },
+          "after": {
+            "mean": 0,
+            "std": 0
+          }
+        },
+        {
+          "name": "speed-index",
+          "before": {
+            "mean": 3268.0,
+            "std": 39.4
+          },
+          "after": {
+            "mean": 5606.99,
+            "std": 86.56
+          }
+        }
+      ]
+    }
+  ]
+}
