@@ -7,5 +7,6 @@ This respository contains tests to measure the performance impact of implementin
 | load_testing_api                | [Web Services REST API](https://github.com/jorenvermeersch/bachelorproef-backend)                        | Load tests with Artillery CLI.              |
 | performance_testing_frontend    | [Front-end Web Development React application](https://github.com/jorenvermeersch/bachelorproef-frontend) | Performance tests with Google Lighthouse.   |
 | data_analysis_and_visualization | n/a                                                                                                      | Visualizing and analysing the test results. |
+| data                            | n/a                                                                                                      | Raw data of tests                           |
 
 **Note**: The 'Application' column contains links to the repository of each application.
